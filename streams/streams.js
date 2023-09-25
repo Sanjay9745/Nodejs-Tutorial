@@ -1,53 +1,65 @@
-console.time("code");
-const fs = require("fs");
+console.time("streams")
+const fs = require("fs")
 
-//read file
-//time 1.1s
-// fs.readFile("rockyou.txt", "utf8",(readErr, data) => {
-//     if (readErr) {
-//         console.error("Error reading data:", readErr);
-//         return;
-//     }
+// read a file using fs.readFile
+//time 1.7s
+// fs.readFile("rockyou.txt", "UTF-8", (err, text) => {
+//     if (err) throw err
+//     //write file
+//     fs.writeFile("rockyou-copy.txt", text, (err) => {
+//         if (err) throw err
+//         console.log("file written")
+//     })
 
-//     // Write the data to "write.txt"
-//     fs.writeFile("write.txt", data, "utf8", (writeErr) => {
-//         if (writeErr) {
-//             console.error("Error writing data:", writeErr);
-//             return;
-//         }
+//     console.timeEnd("streams")
+// })
 
-//         console.log("Data has been written to the file.");
-//     });
-// console.timeEnd("code")
+//stream
+// readstream
+
+
+// // Readable stream without specifying the encoding
+// const readStream = fs.createReadStream("rockyou.txt", "utf8");
+// const writeStream = fs.createWriteStream("write.txt");
+
+// // On data event
+// readStream.on("data", (chunk) => {
+//     // 'chunk' is a buffer
+
+//     // Write the chunk to the write stream
+//     writeStream.write(chunk);
 // });
 
-// create ReadStream
-
-// const ReadStream = fs.createReadStream("rockyou.txt","utf8");
-// const WriteStream = fs.createWriteStream("write.txt","utf8");
-// ReadStream.on("data", (chunk) => {
-//   WriteStream.write(chunk);
+// // Close the write stream to finish writing when all data has been processed
+// readStream.on("end", () => {
+//     writeStream.end();
 // });
 
-// ReadStream.on("end", () => {
-//     WriteStream.end();
-// }
-// );
-// //1s
-// WriteStream.on("finish", () => {
+// // Handle errors, if any occur
+// readStream.on("error", (err) => {
+//     console.error("Error reading data:", err);
+// });
+
+// writeStream.on("error", (err) => {
+//     console.error("Error writing data:", err);
+// });
+
+// // Listen for the 'finish' event to know when the writing is complete
+// writeStream.on("finish", () => {
 //     console.log("Data has been written to the file.");
-//     console.timeEnd("code");
+//     console.timeEnd("streams")
 // });
 
 
-// pipe
+//pipe 
 
-// const ReadStream = fs.createReadStream("rockyou.txt","utf8");
-// const WriteStream = fs.createWriteStream("write.txt","utf8");
+const readStream = fs.createReadStream("rockyou.txt", "utf8");
+const writeStream = fs.createWriteStream("write.txt");
 
-// ReadStream.pipe(WriteStream);
-// //ls
-// WriteStream.on("finish", () => {
-//     console.log("Data has been written to the file.");
-//     console.timeEnd("code");
-// });
+readStream.pipe(writeStream)
+
+writeStream.on("finish", () => {
+    console.log("Data has been written to the file.");
+    console.timeEnd("streams")
+}
+)
