@@ -1,0 +1,16 @@
+"express": "^4.18.2"
+
+4 first part (1)
+
+
+18 middle part
+
+2 last part -> minor changes optional 
+
+
+
+middle part Recommended (security updates) 
+
+
+first part 
+major changes (not compatible with previous versions)
