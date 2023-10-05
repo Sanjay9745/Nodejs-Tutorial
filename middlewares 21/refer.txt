@@ -1,0 +1,24 @@
+app.post("/login", (req, res) => {
+    let data = req.body;
+    let users = JSON.parse(fs.readFileSync(__dirname + "/users.json"));
+    let user = users.find(u => u.username == data.username && u.password == data.password);
+    if (user) {
+        res.send("Login success");
+    } else {
+        res.send("Login failed");
+    }
+})
+
+app.post("/register", (req, res) => {
+    let data = req.body;
+
+    let users = JSON.parse(fs.readFileSync(__dirname + "/users.json"));
+    let user = users.find(u => u.username == data.username);
+    if (user) {
+        res.send("Username already exists");
+    } else {
+        users.push(data);
+        fs.writeFileSync(__dirname + "/users.json", JSON.stringify(users));
+        res.send("Register success");
+    }
+})
