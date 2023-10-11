@@ -38,11 +38,12 @@ header nav{
     padding: 20px 5%;
     color:var(--secondary-color);
 }
-nav ul{
+
+.navbar{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem;
+    gap: 5rem;
 }
 nav ul li a:hover{
     opacity:.8;
