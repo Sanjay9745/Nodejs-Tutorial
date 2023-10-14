@@ -18,7 +18,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-mongoose.connect("mongodb://127.0.0.1:27017/nodejs");
+mongoose.connect(process.env.MONGODB_URI);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
@@ -80,7 +80,10 @@ app.post("/register",async(req,res)=>{
         const hashedPassword = await bcrypt.hash(password,salt);
         const newUser = new User({username,password:hashedPassword});
         await newUser.save();
-        res.redirect("/login")
+
+        req.session.username = username;
+        res.redirect("/");
+
     } catch (error) {
         res.status(500).json({message:"Something went wrong"})
     }
